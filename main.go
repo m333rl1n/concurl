@@ -66,7 +66,7 @@ func main() {
 
 				out, err := cmd.CombinedOutput()
 				if err != nil {
-					fmt.Printf("failed to get output: %s\n", err)
+					fmt.Fprintf(os.Stderr, "[%s] failed to get output %s\n", err, u)
 					continue
 				}
 
@@ -82,7 +82,7 @@ func main() {
 				if _, err := os.Stat(path.Dir(p)); os.IsNotExist(err) {
 					err = os.MkdirAll(path.Dir(p), 0755)
 					if err != nil {
-						fmt.Printf("failed to create output dir: %s\n", err)
+						fmt.Fprintf(os.Stderr, "[%s] failed to create output dir\n", err)
 						continue
 					}
 				}
@@ -96,7 +96,7 @@ func main() {
 
 				err = ioutil.WriteFile(p, buf.Bytes(), 0644)
 				if err != nil {
-					fmt.Printf("failed to save output: %s\n", err)
+					fmt.Fprintf(os.Stderr, "[%s] failed to save output \"%s\"\n", err, p)
 					continue
 				}
 
