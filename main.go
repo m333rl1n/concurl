@@ -30,6 +30,9 @@ func main() {
 	var doSave bool
 	flag.BoolVar(&doSave, "save", false, "Save responses")
 
+	var stdout bool
+	flag.BoolVar(&stdout, "stdout", false, "Print responses in stdout")
+
 	var add_command bool
 	flag.BoolVar(&add_command, "cmd", false, "Print executed command in output")
 
@@ -63,7 +66,7 @@ func main() {
 				// of the progress output
 				args := []string{u, "--silent"}
 
-				if !doSave {
+				if !doSave && !stdout {
 					// send HTTP request with HEAD method when we don't want save responses
 					args = append(args, "--head")
 				}
@@ -75,6 +78,19 @@ func main() {
 				out, err := cmd.CombinedOutput()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "[%s] failed to get output %s\n", err, u)
+					continue
+				}
+
+				if stdout {
+					buf := &bytes.Buffer{}
+					if add_command {
+						buf.WriteString("$ curl ")
+						buf.WriteString(strings.Join(args, " ") + "\n")
+					}
+					buf.Write(out)
+					buf.WriteString("\n\n")
+
+					fmt.Print(buf.String())
 					continue
 				}
 
