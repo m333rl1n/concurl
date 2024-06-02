@@ -30,6 +30,9 @@ func main() {
 	var doSave bool
 	flag.BoolVar(&doSave, "save", false, "Save responses")
 
+	var add_command bool
+	flag.BoolVar(&add_command, "cmd", false, "Print executed command in output")
+
 	flag.Parse()
 
 	// channel to send URLs to workers
@@ -94,9 +97,10 @@ func main() {
 
 				// include the command at the top of the output file
 				buf := &bytes.Buffer{}
-				buf.WriteString("cmd: curl ")
-				buf.WriteString(strings.Join(args, " "))
-				buf.WriteString("\n------\n\n")
+				if add_command {
+					buf.WriteString("$ curl ")
+					buf.WriteString(strings.Join(args, " ") + "\n")
+				}
 				buf.Write(out)
 
 				err = ioutil.WriteFile(p, buf.Bytes(), 0644)
