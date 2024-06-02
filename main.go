@@ -27,8 +27,8 @@ func main() {
 	var outputDir string
 	flag.StringVar(&outputDir, "o", "out", "Output directory")
 
-	var noSave bool
-	flag.BoolVar(&noSave, "no-save", false, "Don't save responses")
+	var doSave bool
+	flag.BoolVar(&doSave, "save", false, "Save responses")
 
 	flag.Parse()
 
@@ -70,7 +70,7 @@ func main() {
 					continue
 				}
 
-				if noSave {
+				if !doSave {
 					fmt.Println(u)
 					continue
 				}
