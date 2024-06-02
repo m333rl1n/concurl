@@ -58,7 +58,12 @@ func main() {
 
 				// we need the silent flag to get rid
 				// of the progress output
-				args := []string{"--silent", u}
+				args := []string{u, "--silent"}
+
+				if !doSave {
+					// send HTTP request with HEAD method when we don't want save responses
+					args = append(args, "--head")
+				}
 
 				// pass all the arguments on to curl
 				args = append(args, flag.Args()...)
