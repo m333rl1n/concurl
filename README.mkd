@@ -73,9 +73,15 @@ cmd: curl --silent https://httpbin.org/anything -HUser-Agent: concurl -HX-Foo: b
 ▶ concurl -h
 Usage of concurl:
   -c int
-    	Concurrency level (default 20)
+        Concurrency level (default 10)
+  -cmd
+        Print executed command
   -d int
-    	Delay between requests to the same domain (default 5000)
+        Milliseconds between requests to the same domain (default 5000)
   -o string
-    	Output directory (default "out")
+        Output directory (default "out")
+  -save
+        Save responses
+  -stdout
+        Print responses in stdout
 ```
