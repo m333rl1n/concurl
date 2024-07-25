@@ -12,7 +12,6 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
-	"strings"
 	"sync"
 	"time"
 )
@@ -85,7 +84,7 @@ func main() {
 					buf := &bytes.Buffer{}
 					if add_command {
 						buf.WriteString("$ curl ")
-						buf.WriteString(strings.Join(args, " ") + "\n")
+						buf.WriteString(u + "\n")
 					}
 					buf.Write(out)
 					buf.WriteString("\n\n")
@@ -100,7 +99,7 @@ func main() {
 				}
 
 				// use a hash of the URL and the arguments as the filename
-				filename := fmt.Sprintf("%x", sha1.Sum([]byte(u+strings.Join(args, " "))))
+				filename := fmt.Sprintf("%x", sha1.Sum([]byte(u)))
 				p := filepath.Join(outputDir, domain, filename)
 
 				if _, err := os.Stat(path.Dir(p)); os.IsNotExist(err) {
@@ -115,7 +114,7 @@ func main() {
 				buf := &bytes.Buffer{}
 				if add_command {
 					buf.WriteString("$ curl ")
-					buf.WriteString(strings.Join(args, " ") + "\n")
+					buf.WriteString(u + "\n")
 				}
 				buf.Write(out)
 
