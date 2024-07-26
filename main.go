@@ -67,7 +67,7 @@ func main() {
 
 				if !doSave && !stdout {
 					// send HTTP request with HEAD method when we don't want save responses
-					args = append(args, "--head")
+					args = append(args, "-X", "HEAD", "-w", "%{http_code}", "-o", "/dev/null")
 				}
 
 				// pass all the arguments on to curl
@@ -75,7 +75,7 @@ func main() {
 				cmd := exec.Command("curl", args...)
 
 				out, err := cmd.CombinedOutput()
-				if err != nil {
+				if err != nil && err.Error() != "exit status 18" {
 					fmt.Fprintf(os.Stderr, "[%s] failed to get output %s\n", err, u)
 					continue
 				}
@@ -94,7 +94,7 @@ func main() {
 				}
 
 				if !doSave {
-					fmt.Println(u)
+					fmt.Println(u + "  " + string(out))
 					continue
 				}
 
